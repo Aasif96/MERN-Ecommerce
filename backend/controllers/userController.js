@@ -14,7 +14,7 @@ exports.registerUser = catchAsyncErrors(async (req,res,next)=>{
             public_id:'sample id',
             url:'profilepic1'
         }
-    })
+    }) 
 
     const token = user.getJWTToken();
 
