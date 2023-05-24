@@ -185,7 +185,38 @@ exports.updateProfile = catchAsyncErrors(async (req,res,next)=>{
         email:req.body.email
     }
 
+    const user = await User.findByIdAndUpdate(req.user.id,newUserData,{
+        new:true,
+        runValidators:true,
+        useFindAndModify:false
+    });
 
-    const user = await User.findByIdAndUpdate
+})
 
+
+
+// Get all users (admin)
+exports.getAllUser = catchAsyncErrors(async (req,res,next)=>{
+
+    const users = await User.find();
+
+    res.status(200).json({
+        success:true,
+        users
+    })
+})
+
+// Get single users (admin)
+exports.getSingleUser = catchAsyncErrors(async (req,res,next)=>{
+
+    const users = await User.findById(req.params.id);
+
+    if(!users){
+        return next(new ErrorHandler(`User doesn't exist with id ${req.params.id}`))
+    }
+
+    res.status(200).json({
+        success:true,
+        users
+    })
 })
