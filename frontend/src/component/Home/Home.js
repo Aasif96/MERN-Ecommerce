@@ -5,19 +5,32 @@ import Product from './Product.js';
 import MetaData from '../layout/MetaData.js';
 import {useDispatch, useSelector} from 'react-redux'
 import { getProducts } from '../../Redux/productApiCall';
+import Loader from '../layout/Loader/Loader';
+import { useAlert } from 'react-alert';
 
 const Home = () => {
 
   const dispatch = useDispatch();
+  const alert = useAlert();
 
   const {products,loading,error, productsCount} = useSelector(state => state.products);
-
   useEffect(()=>{
+
+    if(error){
+      return alert.error(error)
+    }
+
     getProducts(dispatch)
-  },[dispatch])
+  },[dispatch,error,alert])
 
   return (
     <>
+    {
+      loading ? 
+      
+      <Loader/> 
+      : 
+      <>
     <MetaData title="Aasif Ecommerce"/>
       <div className="banner">
         <p>Welcome To Ecommerce</p>
@@ -38,6 +51,8 @@ const Home = () => {
           ))
         }
       </div>
+    </>
+    }
     </>
   )
 }

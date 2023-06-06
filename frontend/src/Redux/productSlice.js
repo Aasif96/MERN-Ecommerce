@@ -16,9 +16,9 @@ export const productSlice = createSlice({
             state.loading=false;
             state.products=action.payload;
         },
-        productFail:(state)=>{
-            state.error=true;
+        productFail:(state,action)=>{
             state.loading=false;
+            state.error=action.payload;
         }
     }
 })
