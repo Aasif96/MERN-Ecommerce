@@ -74,7 +74,7 @@ exports.getProductDetails = catchAsyncErrors(async(req,res,next)=>{
         product
     })
     
-        res.status(401).json(error.message)
+        // res.status(401).json(error.message)
     
 });
 
