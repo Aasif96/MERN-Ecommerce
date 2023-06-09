@@ -19,6 +19,9 @@ export const productSlice = createSlice({
         productFail:(state,action)=>{
             state.loading=false;
             state.error=action.payload;
+        },
+        clearproductError:(state)=>{
+            state.error=null
         }
     }
 })
@@ -26,7 +29,7 @@ export const productSlice = createSlice({
 export const productDetailsSlice = createSlice({
     name:"productDetails",
     initialState:{
-        productDetails:[],
+        productDetails:'',
         loading:true,
         error:false,
     },
@@ -40,14 +43,17 @@ export const productDetailsSlice = createSlice({
         },
         productDetailsFail:(state,action)=>{
             state.loading=false;
-            state.error=action.payload.product;
+            state.error=action.payload;
+        },
+        clearproductDetailsError:(state)=>{
+            state.error=null
         }
     }
 })
 
 
-export const {productRequest, produtSuccess, productFail} = productSlice.actions;
-export const {productDetailsRequest, productDetailsSuccess, productDetailsFail} = productDetailsSlice.actions;
+export const {productRequest, produtSuccess, productFail, clearproductError} = productSlice.actions;
+export const {productDetailsRequest, productDetailsSuccess, productDetailsFail, clearproductDetailsError} = productDetailsSlice.actions;
 
 //export default productSlice.reducer;
 

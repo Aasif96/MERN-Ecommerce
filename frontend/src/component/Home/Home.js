@@ -1,7 +1,7 @@
 import React,{useEffect} from 'react'
 import {CgMouse} from 'react-icons/all'
 import './Home.css'
-import Product from './Product.js';
+import ProductCard from './ProductCard.js';
 import MetaData from '../layout/MetaData.js';
 import {useDispatch, useSelector} from 'react-redux'
 import { getProducts } from '../../Redux/productApiCall';
@@ -47,7 +47,7 @@ const Home = () => {
 
         {
           products.map((product)=>(
-            <Product product={product}/>
+            <ProductCard product={product}/>
           ))
         }
       </div>
