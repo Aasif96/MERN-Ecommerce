@@ -14,6 +14,7 @@ const Home = () => {
   const alert = useAlert();
 
   const {products,loading,error, productsCount} = useSelector(state => state.products.product);
+
   useEffect(()=>{
 
     if(error){
@@ -46,8 +47,8 @@ const Home = () => {
         {/* <Product product={product}/> */}
 
         {
-          products.map((product)=>(
-            <ProductCard product={product}/>
+          products.map((product,i)=>(
+            <ProductCard key={i} product={product}/>
           ))
         }
       </div>
