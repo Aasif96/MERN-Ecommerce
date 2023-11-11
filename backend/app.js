@@ -2,11 +2,19 @@ const express = require('express');
 const errorMiddleware = require("./middleware/error");
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
+const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
 
 const app = express();
-app.use(express.json());
 app.use(cookieParser())
-app.use(cors());
+app.use(express.json());
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(fileUpload())
+const corsConfig = {
+    credentials: true,
+    origin: true,
+};
+app.use(cors(corsConfig));
 
 const product = require('./routes/productRoute')
 const user = require("./routes/userRoute");

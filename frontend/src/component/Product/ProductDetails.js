@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React,{useEffect, useState} from 'react'
 import Carousel from 'react-material-ui-carousel';
 import './ProductDetails.css';
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,12 +8,19 @@ import ReactStars from 'react-rating-stars-component'
 import ReviewCard from './ReviewCard.js'
 import { useAlert } from "react-alert";
 import { clearproductDetailsError } from '../../Redux/productSlice';
+import { addToCart } from '../../Redux/cartSlice';
+import { addItemsToCart } from '../../Redux/cartApiCall';
 
 const ProductDetails = ({match}) => {
 
     const alert = useAlert();
     const dispatch = useDispatch();
     const data = useSelector((state) => state.products.productDetails)
+
+    const addToCartHandler = () =>{
+      dispatch(addItemsToCart(match.params.id,quantity));
+      alert.success("Item Added To Cart");
+    }
 
     useEffect(()=>{
       if(data.error){
@@ -30,6 +37,20 @@ const ProductDetails = ({match}) => {
       size:window.innerWidth < 600 ? 20 : 25,
       value:4,
       isHalf:true,
+  }
+
+  const [quantity,setQuantity] = useState(1);
+
+  const increaseQuantity = () =>{
+    if(data.productDetails.product.stock <= quantity) return;
+    const qty = quantity + 1;
+    setQuantity(qty)
+  }
+
+  const decreaseQuantity = () =>{
+    if(1 >= quantity) return;
+    const qty = quantity - 1;
+    setQuantity(qty)
   }
 
   return (
@@ -70,11 +91,11 @@ const ProductDetails = ({match}) => {
           <h1>{`₹${data.productDetails.product.price}`}</h1>
           <div className="detailsBlock-3-1">
             <div className="detailsBlock-3-1-1">
-            <button>-</button>
-            <input type="number" value="1" />
-            <button>+</button>
+            <button onClick={decreaseQuantity}>-</button>
+            <input type="number" value={quantity} />
+            <button onClick={increaseQuantity}>+</button>
             </div>{" "}
-            <button>Add to Cart</button>
+            <button onClick={addToCartHandler}>Add to Cart</button>
           </div>
           <p>
             Status:{" "}

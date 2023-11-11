@@ -4,18 +4,25 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const sendToken = require('../utils/jwToken');
 const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
+const cloudinary = require('cloudinary');
 
 
 // register user
 exports.registerUser = catchAsyncErrors(async (req,res,next)=>{
 
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar,{
+        folder:"avatar",
+        width:150,
+        crop:"scale",
+    });
+
     const {name,email,password} = req.body;
 
-    const user = await User.create({
+    const user = await User.create({ 
         name,email,password,
         avatar:{
-            public_id:'sample id',
-            url:'profilepic1'
+            public_id: myCloud.public_id,
+            url:myCloud.secure_url,
         }
     }) 
 
@@ -26,8 +33,10 @@ exports.registerUser = catchAsyncErrors(async (req,res,next)=>{
 
 exports.loginUser = catchAsyncErrors(async (req,res,next) =>{
 
-    const {email,password} = req.body;
-    
+    const { loginEmail, loginPassword } = req.body;
+    const email = loginEmail;
+    const password = loginPassword;
+
     if(!email || !password){
         return next(new ErrorHandler('Please enter email and password',400));
     }
